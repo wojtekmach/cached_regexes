@@ -1,15 +1,15 @@
-defmodule CachedRegexs do
+defmodule CachedRegexes do
   defmacro __using__(_) do
     quote do
       import Kernel, except: [sigil_r: 2]
-      import CachedRegexs
+      import CachedRegexes
     end
   end
 
-  @path Path.join(Mix.Project.build_path(), "cached_regexs")
+  @path Path.join(Mix.Project.build_path(), "cached_regexes")
 
   defmacro sigil_r({:<<>>, _, [binary]}, modifiers) do
-    regexs =
+    regexes =
       case File.read(@path) do
         {:ok, data} ->
           :erlang.binary_to_term(data)
@@ -18,12 +18,12 @@ defmodule CachedRegexs do
           %{}
       end
 
-    key = map_size(regexs)
-    regexs = Map.put(regexs, key, {binary, modifiers})
-    File.write!(@path, :erlang.term_to_binary(regexs))
+    key = map_size(regexes)
+    regexes = Map.put(regexes, key, {binary, modifiers})
+    File.write!(@path, :erlang.term_to_binary(regexes))
 
     quote do
-      CachedRegexs.__get__(unquote(key))
+      CachedRegexes.__get__(unquote(key))
     end
   end
 
@@ -41,7 +41,7 @@ defmodule CachedRegexs do
   end
 
   defp load do
-    regexs =
+    regexes =
       case File.read(@path) do
         {:ok, data} ->
           for {key, {binary, modifiers}} <- :erlang.binary_to_term(data), into: %{} do
@@ -52,6 +52,6 @@ defmodule CachedRegexs do
           %{}
       end
 
-    :persistent_term.put(__MODULE__, regexs)
+    :persistent_term.put(__MODULE__, regexes)
   end
 end

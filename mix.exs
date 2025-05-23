@@ -1,9 +1,9 @@
-defmodule CachedRegexs.MixProject do
+defmodule CachedRegexes.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :cached_regexs,
+      app: :cached_regexes,
       version: "0.1.0",
       elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
@@ -14,7 +14,7 @@ defmodule CachedRegexs.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {CachedRegexs.Application, []}
+      mod: {CachedRegexes.Application, []}
     ]
   end
 

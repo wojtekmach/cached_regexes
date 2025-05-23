@@ -1,6 +1,6 @@
-defmodule CachedRegexsTest do
+defmodule CachedRegexesTest do
   use ExUnit.Case, async: true
-  use CachedRegexs
+  use CachedRegexes
 
   test "it works" do
     assert ~r/foo/.source == "foo"
