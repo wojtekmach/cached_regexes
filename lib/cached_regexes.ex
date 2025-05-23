@@ -18,7 +18,10 @@ defmodule CachedRegexes do
           %{}
       end
 
-    key = map_size(regexes)
+    counter = :persistent_term.get({__MODULE__, :counter})
+    :counters.add(counter, 1, 1)
+    key = :counters.get(counter, 1)
+
     regexes = Map.put(regexes, key, {binary, modifiers})
     File.write!(@path, :erlang.term_to_binary(regexes))
 
@@ -28,6 +31,7 @@ defmodule CachedRegexes do
   end
 
   def __init__ do
+    :persistent_term.put({__MODULE__, :counter}, :counters.new(1, []))
     File.rm_rf!(@path)
   end
 
